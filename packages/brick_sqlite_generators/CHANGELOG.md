@@ -1,3 +1,7 @@
+## Unreleased
+
+- Support `analyzer` `>=10.0.0 <15.0.0` (minimum raised: `isSynthetic` was removed in analyzer 11, its `isOrigin*` replacements only exist since 10)
+
 ## 4.1.0
 
 - Support `analyzer` `>=8.0.0 <10.0.0`

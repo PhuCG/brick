@@ -16,19 +16,21 @@ Future<BooleanFields> _$BooleanFieldsFromSqlite(
         : data['nullable_field'] == 1,
     multipleFields: data['multiple_fields'] == null
         ? null
-        : jsonDecode(
-            data['multiple_fields'],
-          ).map((d) => d == 1).toList().cast<bool>(),
+        : jsonDecode(data['multiple_fields'])
+              .map((d) => d == 1)
+              .toList()
+              .cast<bool>(),
     multipleNullableFields: data['multiple_nullable_fields'] == null
         ? null
-        : jsonDecode(
-            data['multiple_nullable_fields'],
-          ).map((d) => d == 1).toList().cast<bool>(),
+        : jsonDecode(data['multiple_nullable_fields'])
+              .map((d) => d == 1)
+              .toList()
+              .cast<bool>(),
     multipleFutureFields: data['multiple_future_fields'] == null
         ? null
-        : jsonDecode(
-            data['multiple_future_fields'],
-          ).toList().cast<Future<bool>>(),
+        : jsonDecode(data['multiple_future_fields'])
+              .toList()
+              .cast<Future<bool>>(),
   )..primaryKey = data['_brick_id'] as int;
 }
 

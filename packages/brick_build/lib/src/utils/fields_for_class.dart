@@ -48,8 +48,9 @@ abstract class FieldsForClass<FieldAnnotation extends Object> {
   const FieldsForClass({required this.element});
 
   /// Returns `true` for `int get name => 5`
-  /// In later analyzer releases, `ImplicitGetter` was removed
-  static bool isComputedGetter(FieldElement field) => !field.getter!.isSynthetic;
+  /// In later analyzer releases, `ImplicitGetter` was removed.
+  /// A getter induced by a field declaration reports `isOriginVariable` (formerly `isSynthetic`).
+  static bool isComputedGetter(FieldElement field) => !field.getter!.isOriginVariable;
 }
 
 /// Ensures uniqueness of accessible fields within a [ClassElement]
@@ -97,7 +98,8 @@ class _FieldSet implements Comparable<_FieldSet> {
   /// Returns the offset of given field/property in its source file – with a
   /// preference for the getter if it's defined.
   static int _offsetFor(FieldElement e) {
-    if (e.isSynthetic) {
+    // A field induced by a getter/setter pair (formerly `isSynthetic`)
+    if (e.isOriginGetterSetter) {
       return (e.getter ?? e.setter)!.id;
     }
     return e.id;
