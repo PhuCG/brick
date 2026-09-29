@@ -56,6 +56,13 @@ class ModelDictionaryBuilder<_ClassAnnotation> extends BaseBuilder<_ClassAnnotat
     logStopwatch('Generated brick.g.dart', stopwatch);
   }
 
+  /// Matches the declaration of [className], allowing any whitespace (including line breaks)
+  /// after `class`, but not a longer class name that merely starts with it
+  /// (`class Post` must not match `class PostDraft`). Dart identifiers may contain `$`,
+  /// so a plain `\b` word boundary is not enough.
+  static RegExp classDeclaration(String className) =>
+      RegExp('class\\s+${RegExp.escape(className)}(?![\\w\$])');
+
   ///
   static Map<String, String> classFilePathsFromAnnotations(
     Iterable<AnnotatedElement> annotations,
@@ -64,7 +71,9 @@ class ModelDictionaryBuilder<_ClassAnnotation> extends BaseBuilder<_ClassAnnotat
       {
         for (final annotation in annotations)
           '${annotation.element.name}': filesToContents.entries
-              .firstWhere((entry) => entry.value.contains(RegExp(r'class\s+${annotation.element.name}\s*')))
+              .firstWhere(
+                (entry) => entry.value.contains(classDeclaration('${annotation.element.name}')),
+              )
               .key
               // Make relative from the `brick/` folder
               .replaceAll(RegExp('^lib/'), '../'),

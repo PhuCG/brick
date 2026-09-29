@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Support `analyzer` `>=10.0.0 <15.0.0` (minimum raised: `isSynthetic` was removed in analyzer 11, its `isOrigin*` replacements only exist since 10)
+- Fix `ModelDictionaryBuilder` never finding model files: the class-name pattern added in #663 was a raw string, so `${...}` was not interpolated and every build failed with `Bad state: No element`. The pattern now also rejects longer class names that start with the same name (`Post` vs `PostDraft`)
 
 ## 4.1.0
 
